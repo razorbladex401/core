@@ -1,6 +1,6 @@
 {
   "name": "com.toastwallet.core",
-  "version": "3.0.1",
+  "version": "4.0.0-alpha",
   "displayName": "Toast Wallet",
   "cordova": {
     "platforms": [
@@ -14,61 +14,52 @@
       "cordova-plugin-dialogs": {},
       "cordova-plugin-network-information": {},
       "cordova-plugin-statusbar": {},
-      "cordova-plugin-whitelist": {},
       "cordova-plugin-sqlite-2": {},
       "cordova-plugin-screen-orientation": {},
-      "cordova-plugin-crosswalk-webview": {
-        "XWALK_VERSION": "23+",
-        "XWALK_LITEVERSION": "xwalk_core_library_canary:23+",
-        "XWALK_COMMANDLINE": "-disable-pull-to-refresh-effect",
-        "XWALK_MODE": "embedded",
-        "XWALK_MULTIPLEAPK": "true"
-      },
-      "ionic-plugin-keyboard": {},
+      "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-battery-status": {},
-      "cordova-android-support-gradle-release": {
-        "ANDROID_SUPPORT_VERSION": "23.+"
-      },
-      "phonegap-plugin-barcodescanner": {
-        "CAMERA_USAGE_DESCRIPTION": "The camera is used to scan QR-codes of XRP ledger addresses"
-      },
+      "cordova-plugin-qrscanner": {},
       "cordova-plugin-ios-camera-permissions": {
         "CAMERA_USAGE_DESCRIPTION": "The camera is used to scan QR-codes of XRP ledger addresses",
         "PHOTOLIBRARY_USAGE_DESCRIPTION": "The photo library is used to scan QR-codes of XRP ledger addresses"
       },
-      "cordova-plugin-openurlext": {},
+      "cordova-plugin-inappbrowser": {},
       "cordova-plugin-customurlscheme": {
         "URL_SCHEME": "xrpl",
         "ANDROID_SCHEME": " ",
         "ANDROID_HOST": " ",
         "ANDROID_PATHPREFIX": "/"
       },
-      "cordova-plugin-clipboard-v2": {},
-      "it.almaviva.openurlext": {}
+      "cordova-clipboard": {},
+      "cordova-plugin-androidx-adapter": {},
+      "openurlext-shim": {},
+      "barcodescanner-shim": {}
     }
   },
   "dependencies": {
-    "cordova-android": "^6.4.0",
-    "cordova-android-support-gradle-release": "~1.4.3",
     "cordova-browser": "5.0.4",
+    "cordova-clipboard": "^1.3.0",
     "cordova-ios": "^4.5.5",
-    "cordova-plugin-battery-status": "~1.2.4",
-    "cordova-plugin-camera": "~2.1.1",
-    "cordova-plugin-compat": "^1.2.0",
-    "cordova-plugin-crosswalk-webview": "~2.3.0",
+    "cordova-plugin-androidx-adapter": "^1.1.3",
+    "cordova-plugin-battery-status": "^2.0.3",
+    "cordova-plugin-camera": "^6.0.0",
     "cordova-plugin-customurlscheme": "4.4.0",
-    "cordova-plugin-device": "~2.0.2",
-    "cordova-plugin-dialogs": "~1.2.0",
-    "cordova-plugin-ios-camera-permissions": "~1.2.0",
-    "cordova-plugin-network-information": "~1.2.0",
-    "cordova-plugin-openurlext": "^1.0.1",
-    "cordova-plugin-screen-orientation": "~2.0.1",
+    "cordova-plugin-device": "^2.1.0",
+    "cordova-plugin-dialogs": "^2.0.2",
+    "cordova-plugin-inappbrowser": "^5.0.0",
+    "cordova-plugin-ionic-keyboard": "^2.2.0",
+    "cordova-plugin-ios-camera-permissions": "^1.2.0",
+    "cordova-plugin-network-information": "^3.0.0",
+    "cordova-plugin-qrscanner": "^3.0.1",
+    "cordova-plugin-screen-orientation": "^3.0.2",
     "cordova-plugin-sqlite-2": "~1.0.4",
-    "cordova-plugin-statusbar": "~2.1.2",
-    "cordova-plugin-whitelist": "~1.2.1",
+    "cordova-plugin-statusbar": "^3.0.0",
     "debug": "4.1.1",
-    "ionic-plugin-keyboard": "~2.2.1",
-    "phonegap-plugin-barcodescanner": "~6.0.6",
     "xml2js": "^0.4.22"
+  },
+  "devDependencies": {
+    "barcodescanner-shim": "file:plugins-local/barcodescanner-shim",
+    "cordova-android": "^13.0.0",
+    "openurlext-shim": "file:plugins-local/openurlext-shim"
   }
 }

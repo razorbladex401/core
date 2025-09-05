@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="barcodescanner-shim" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>BarcodeScanner Shim</name>
+    <description>Shim that exposes cordova.plugins.barcodeScanner via QRScanner</description>
+    <js-module src="www/barcodescanner-shim.js" name="BarcodeScannerShim">
+        <clobbers target="cordova.plugins.barcodeScanner" />
+    </js-module>
+</plugin>
+

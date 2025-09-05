@@ -1,5 +1,44 @@
 #!/bin/bash
-cp platforms/android/assets/www/cordova_plugins.js platforms/android/assets/www/cordova_plugins_.js
-cat platforms/android/assets/www/cordova_plugins_.js | pcregrep -Mv '{\s+"id": "it.almaviva.openurlext.OpenUrlExt"[^\[\]}]*?}' | tr '\n' '%' | sed 's/},%\s*];/}%];/g' | tr '%' '\n' > platforms/android/assets/www/cordova_plugins.js
-rm platforms/android/assets/www/cordova_plugins_.js
-touch android_bc_ran
+set -euo pipefail
+
+echo "[hook] android_before_compile: patching legacy gradle scripts (barcode/qr)" >&2
+
+# Patch old PhoneGap barcode scanner gradle if present
+PG_BS_GRADLE="platforms/android/phonegap-plugin-barcodescanner/core-barcodescanner.gradle"
+if [ -f "$PG_BS_GRADLE" ]; then
+  perl -0777 -pe "s/repositories\s*\{[\s\S]*?\}/repositories{\n    google()\n    mavenCentral()\n    flatDir{\n        dirs 'libs'\n    }\n}/g" -i "$PG_BS_GRADLE" || true
+  sed -i.bak "s/\bcompile\b/implementation/g" "$PG_BS_GRADLE" || true
+  sed -i.bak "s#com.android.support:support-v4:27.1.0#androidx.legacy:legacy-support-v4:1.0.0#g" "$PG_BS_GRADLE" || true
+  rm -f "$PG_BS_GRADLE.bak"
+else
+  echo "[hook] phonegap barcodescanner gradle not found; ok" >&2
+fi
+
+# Patch QRScanner gradle to AndroidX + implementation
+QR_GRADLE="platforms/android/cordova-plugin-qrscanner/core-qrscanner.gradle"
+if [ -f "$QR_GRADLE" ]; then
+  # Replace repository block
+  perl -0777 -i -pe 's/repositories\s*\{[\s\S]*?\}/repositories{\n    google()\n    mavenCentral()\n}/g' "$QR_GRADLE" || true
+  # Replace all occurrences of the deprecated Gradle configuration keyword
+  perl -0777 -i -pe 's/\bcompile\b/implementation/g' "$QR_GRADLE" || true
+  # Switch to AndroidX appcompat
+  perl -0777 -i -pe "s#androidx\\.appcompat:appcompat:[^'\"]+#androidx.appcompat:appcompat:1.6.1#g; s#com\\.android\\.support:appcompat-v7:[^'\"]+#androidx.appcompat:appcompat:1.6.1#g" "$QR_GRADLE" || true
+  # Bump ZXing to recent versions and add core if missing
+  if grep -q "zxing-android-embedded:3.3.0" "$QR_GRADLE"; then
+    perl -0777 -i -pe "s#implementation 'com\\.journeyapps:zxing-android-embedded:3\\.3\\.0'#implementation 'com.journeyapps:zxing-android-embedded:4.3.0'\n    implementation 'com.google.zxing:core:3.5.2'#g" "$QR_GRADLE" || true
+  fi
+  # Remove plugin-defined android { ... } block to let Cordova control SDK versions
+  perl -0777 -i -pe 's/android\s*\{[\s\S]*?\}\s*$//g' "$QR_GRADLE" || true
+else
+  echo "[hook] qrscanner gradle not found; ok" >&2
+fi
+
+# Patch QRScanner.java to use updated DefaultDecoderFactory constructor
+QR_JAVA="platforms/android/app/src/main/java/com/bitpay/cordova/qrscanner/QRScanner.java"
+if [ -f "$QR_JAVA" ]; then
+  perl -0777 -i -pe 's/new\s+DefaultDecoderFactory\s*\(\s*formatList\s*,\s*null\s*,\s*null\s*\)/new DefaultDecoderFactory(formatList)/g' "$QR_JAVA" || true
+else
+  echo "[hook] QRScanner.java not found; ok" >&2
+fi
+
+exit 0

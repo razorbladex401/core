@@ -1,0 +1,12 @@
+{
+  "name": "barcodescanner-shim",
+  "version": "1.0.0",
+  "description": "Shim to expose cordova.plugins.barcodeScanner via QRScanner",
+  "cordova": {
+    "id": "barcodescanner-shim",
+    "platforms": ["android", "ios", "browser"]
+  },
+  "author": "Project",
+  "license": "MIT"
+}
+

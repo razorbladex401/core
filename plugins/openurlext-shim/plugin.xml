@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="openurlext-shim" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>OpenUrlExt Shim</name>
+    <description>Shim to replace OpenUrlExt using InAppBrowser</description>
+    <js-module src="www/openurlext-shim.js" name="OpenUrlExtShim">
+        <clobbers target="OpenUrlExt" />
+    </js-module>
+</plugin>
+
